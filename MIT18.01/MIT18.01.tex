@@ -6,7 +6,7 @@
 
 \title{MIT18.01 Single Variable Calculus}
 \author{Xingdong Xue}
-\date{\today}
+\date{Nov. 2019}
 
 \newcommand\limitx[1]{\lim_{x \to #1}}
 \newcommand\limitdeltaxzero{\lim_{\Delta x \to 0}}
@@ -19,7 +19,7 @@
 \maketitle
 
 \section{Derivatives}
-\subsection{What Is Derivative}
+\subsection{What is Derivative}
 
 \textbf{Geometric interpretation}
 
@@ -69,6 +69,9 @@ It equas to
 \item Other Discontinuity: $\sin{\frac{1}{x}}$, no left or right limit.
 \end{enumerate}
 
+\textbf{Differentiable}
+
+Left differential and right differential exist and equal.
 
 \textbf{Differentiable Implies Continuous}
 $$\limitx{x_0}{(f(x)-f(x_0))} = \limitx{x_0}\left[{\frac{f(x)-f(x_0)}{x-x_0}}\right](x-x_0) = f'(x_0) \cdot x_0 = 0$$
@@ -441,6 +444,21 @@ $$|\sum\limits_{n=1}^{\infty}f(n) - \improperint{1}f(x)dx| < f(1)$$
 if $f(x) \sim g(x)$, then $\sum f(n)$ and $\sum g(n)$ eigher both converge or both diverge. \\
 $f(x) \sim g(x)$ means
 $$\limitx{\infty}\frac{f(x)}{g(x)} = c \quad (0 < c < \infty)$$
+
+\textbf{Integral Test}
+
+1. Limit Comparison
+
+$$\sum\limits_{n=0}^{\infty}\frac{5n+2}{n^3+1} \sim \sum\limits_{n=0}^{\infty}\frac{1}{n^2}$$
+
+2. Ratio Test
+$$\sum a_n = L$$
+\begin{enumerate}
+  \item if $L < 1$, $\sum a_n = L$ converges.
+  \item if $L >1 $, $\sum a_n = L$ diverges.
+  \item if $L = 1$, noting.
+\end{enumerate}
+
 
 \subsection{Taylor Series}
 
