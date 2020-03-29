@@ -1,14 +1,14 @@
 \documentclass{article}
 
 \usepackage{ctex}
-\usepackage{amsmath}
-\usepackage{url}
 
 \title{二叉树}
 \author{Xingdong Xue}
 \date{Mar. 2020}
 
 \begin{document}
+\maketitle
+
 \section{树}
 \subsection{树的形成}
 树结合了向量和列表，在\textbf{插入}和\textbf{查找}上都有不错的效率，是一种\textbf{半线性}的数据结构。
@@ -162,10 +162,6 @@ $$depth(v) + height(v) \leq height(T)$$
   \item color：红黑树
 \end{itemize}
 
-\subsection{BinNode接口实现}
-插入孩子
-return leftChild = new BinNode(e, this)
-
 \subsection{高度更新}
 高度发生变化是因为左子树或右子树高度发生变化，树的高度是左子树或右子树高度中的最大者+1。
 
@@ -269,10 +265,8 @@ $$L_n \rightarrow T_n \rightarrow L_{n-1} \rightarrow T_{n-1} \rightarrow \cdots
 \subsection{重构}
 根据树的序列还原树的结构
 
-\textbf{先序|后序+中序}
-先序+后序无法确定树。
+先序或后序加上中序可以确定一棵二叉树。
 
-\textbf{[先序+后序]*真}
-
+[先序+后序]*真可以确定一棵二叉树。
 
 \end{document}
