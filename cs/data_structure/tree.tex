@@ -1,0 +1,278 @@
+\documentclass{article}
+
+\usepackage{ctex}
+\usepackage{amsmath}
+\usepackage{url}
+
+\title{二叉树}
+\author{Xingdong Xue}
+\date{Mar. 2020}
+
+\begin{document}
+\section{树}
+\subsection{树的形成}
+树结合了向量和列表，在\textbf{插入}和\textbf{查找}上都有不错的效率，是一种\textbf{半线性}的数据结构。
+
+\subsection{树的应用}
+\begin{itemize}
+  \item 层次关系的数据表示
+  \item 表达式
+  \item 文件系统结构
+\end{itemize}
+
+\subsection{有根树}
+
+树是一种特殊的图，把图中一顶点作为根（root）后，则图可以称作有根树（rooted tree）。
+
+对任意几个有根树进行合并的结果一样是有根树。
+
+相对于树T，它的子树记做$T_i = subtree(r_i)$。
+
+\subsection{有序树}
+了解以下概念：
+
+\begin{itemize}
+  \item 孩子（child）
+  \item 兄弟（sibling）
+  \item 父亲（parent）
+  \item 祖先（ancestor）
+  \item 度（degree）：一个顶点孩子的数目。
+\end{itemize}
+
+可以用顶点数n作为复杂度的参照，因为有以下公式：
+$$edge = n-1 = \sum_{r \in V}{degree(r)} $$
+
+\subsection{路径和环路}
+
+如果k+1个点通过k条边相邻，则构成一条路径（path），也称通路，路径长度 = k。
+
+如果一个路径的首尾顶点相同，则成为环路（cycle/loop）。
+
+\subsection{连通和无环}
+
+如果任意两顶点之间均有路径，称作连通图（connected）；不含环路，称为无环图（acyclic）。
+
+树是一种\textbf{无环连通图}，也是原图的\textbf{极小连通图}和\textbf{极大无环图}。
+
+\subsection{深度和层次}
+
+不引起歧义的情况下，路径，顶点，子树可以相互指代，即：
+$$path(v) \sim v \sim subtree(v)$$
+
+有定义v的深度：
+$$depth(v) = \left|x\right|$$
+
+在$path(v)$上的顶点，均称作v的祖先（ancestor），v是它们的后代（descendent），同时除v自身外，是真（proper）祖先/后代。
+
+半线性：在任一深度，祖先（前驱）唯一，后代（后继）不唯一。
+根顶点是所有顶点的公共祖先，深度为0。
+
+没有后代的顶点被称为叶子(leaf)。
+
+叶子深度中的最大者，称作树的高度(height)，且有
+$$height(v) = height(subtree(v))$$
+
+特别地，定义空树的高度是-1。
+
+$$depth(v) + height(v) \leq height(T)$$
+
+\section{树的表示}
+\subsection{树的接口}
+\begin{enumerate}
+  \item root()：获取根节点
+  \item parent()：获取父节点
+  \item firstChild()：获取第一个子节点
+  \item nextSibling()：兄弟
+  \item insert(i, e)：将e作为第i个孩子插入
+  \item remove(i)：删除第i个节点
+  \item traverse()：遍历
+\end{enumerate}
+
+\subsection{父亲}
+\begin{itemize}
+  \item rank：序号
+  \item data：数据
+  \item parent：父节点序号，根节点为-1。
+\end{itemize}
+
+时间复杂度在寻找父亲与根节点时是$O(1)$，查找孩子兄弟是$O(n)$。
+
+\subsection{孩子}
+\begin{itemize}
+  \item rank：序号
+  \item data：数据
+  \item children：孩子列表
+\end{itemize}
+
+时间复杂度在寻找孩子节点时是$O(1)$，查找父亲是$O(n)$。
+
+\subsection{父亲+孩子}
+\begin{itemize}
+  \item rank：序号
+  \item data：数据
+  \item parent：父亲
+  \item children：孩子列表
+\end{itemize}
+
+时间复杂度在寻找孩子和父亲节点时都是$O(1)$，但各个节点的children可能要保留n个引用。
+
+\subsection{长子+兄弟}
+\begin{itemize}
+  \item rank：序号
+  \item data：数据
+  \item parent：父亲
+  \item firstChild：长子
+  \item nextSibling：下一个兄弟
+\end{itemize}
+
+时间复杂度在寻找孩子和父亲节点时都是$O(1)$，且各个节点的children最多2个引用。
+
+\section{二叉树}
+\subsection{概述}
+
+每个节点度数不超过2的树，成为二叉树（binary tree）。
+
+可以划分为左子树和右子树，默认左子树在前。
+
+一些规律：
+\begin{enumerate}
+  \item 深度为k的节点，至多$2^k$个。
+  \item 含n各节点，高度为h的二叉树中，$h<n<2^{h+1} \ sim 2 \times 2^h$。
+  \item $n=h+1$时，为单链；$n=2^{h+1}$时，为满二叉树（full binary tree）。
+  \item 高度增长的缓慢，宽度增长的迅速。
+\end{enumerate}
+
+\subsection{真二叉树}
+
+每个节点的度数均为偶数的二叉树为真二叉树。
+可以通过为单孩子的节点添加虚拟孩子来实现真二叉树。
+
+\subsection{描述多叉树}
+
+多叉树可以通过长子-兄弟表示法并进行旋转后，得到一颗二叉树。
+
+\section{二叉树实现}
+\subsection{BinNode模板类}
+\begin{itemize}
+  \item parent
+  \item lChild
+  \item rChile
+  \item height
+  \item npl：左式堆
+  \item color：红黑树
+\end{itemize}
+
+\subsection{BinNode接口实现}
+插入孩子
+return leftChild = new BinNode(e, this)
+
+\subsection{高度更新}
+高度发生变化是因为左子树或右子树高度发生变化，树的高度是左子树或右子树高度中的最大者+1。
+
+更新高度时，循环更新x的父级节点的高度直到根节点。
+
+复杂度为节点的深度。
+
+\subsection{节点插入}
+
+\begin{enumerate}
+  \item 增加树的长度
+  \item 挂上节点
+  \item 更新全树的高度
+\end{enumerate}
+
+\subsection{遍历}
+
+\begin{itemize}
+  \item 先序（preorder）
+  \item 中序（inorder）
+  \item 后序（postorder）
+  \item 层次（广度）：自上而下，自作而右
+\end{itemize}
+
+\subsection{递归遍历}
+\begin{enumerate}
+  \item 如果节点为空，则返回
+  \item 访问当前节点
+  \item 遍历节点的左孩子节点
+  \item 遍历节点的右孩子节点
+\end{enumerate}
+
+\subsection{迭代先序遍历1}
+
+如果递归形式的调用都出现在函数的末尾，则成为尾递归，尾递归通常可以转换为迭代的形式进行优化。
+\begin{enumerate}
+  \item 声明一个空栈并让根节点入栈
+  \item 弹出栈元素并访问
+  \item 将右孩子入栈
+  \item 将左孩子入栈
+  \item 循环步骤234直到栈为空
+\end{enumerate}
+
+\subsection{迭代先序遍历2}
+
+先序遍历的逻辑可以简化为先无限从左子树往下进行访问，然后再从右子树进行倒序回溯。
+假定某棵子树的所有左子节点为$L_1 \cdots L_n$，与节点平级的右子树为$T_1 \cdots T_n$，则二叉树的遍历顺序可以简单表示为
+$$L_1 \rightarrow \cdots L_n \rightarrow T_n \rightarrow \cdots T_1$$
+
+\begin{enumerate}
+  \item 声明一个空栈
+  \item \begin{enumerate}
+          \item 访问当前节点
+          \item 将该节点右孩子（右子树）入栈
+          \item 迭代到下一个左子树
+          \item 循环直到左侧链被遍历完毕
+        \end{enumerate}
+  \item 如果栈为空，则退出循环
+  \item 不为空则弹出下一棵右子树的根
+  \item 循环2至4步
+\end{enumerate}
+
+\subsection{中序遍历}
+
+中序遍历的逻辑可以简化为先访问最深的左子树，然后再访问对应的右子树，然后将这科子树剔除，递归的。
+假定某棵子树的所有左子节点为$L_1 \cdots L_n$，与节点平级的右子树为$T_1 \cdots T_n$，则二叉树的遍历顺序可以简单表示为
+$$L_n \rightarrow T_n \rightarrow L_{n-1} \rightarrow T_{n-1} \rightarrow \cdots L_1 \rightarrow T_1$$
+
+\begin{enumerate}
+  \item 声明一个空栈
+  \item \begin{enumerate}
+          \item 将该节点左孩子（左子树）入栈
+          \item 迭代到下一个左子树
+          \item 循环直到左侧链被遍历完毕
+        \end{enumerate}
+  \item 如果栈为空，则退出循环
+  \item 不为空则弹出栈内节点
+  \item 访问新节点
+  \item 转向右子树（注意为空）
+  \item 循环2至6步
+\end{enumerate}
+
+复杂度不为$O(n^2)$，因为循环中对n个节点进行了分摊。
+
+\subsection{层次遍历}
+因为先序，中序，后序遍历都有下一层节点先于上一层节点被访问的情况，所以无法实现需求。
+层次遍历是严格意义上的先进先出，自热而然想到队列的数据结构。
+
+\begin{enumerate}
+  \item 声明一个空队列
+  \item 根节点入队
+  \item \begin{enumerate}
+          \item 从队列里取一个节点
+          \item 访问该节点
+          \item 左孩子入队
+          \item 右孩子入队
+        \end{enumerate}
+  \item 循环执行3直至队列为空
+\end{enumerate}
+
+\subsection{重构}
+根据树的序列还原树的结构
+
+\textbf{先序|后序+中序}
+先序+后序无法确定树。
+
+\textbf{[先序+后序]*真}
+
+
+\end{document}
